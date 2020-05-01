@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(EmailApp());
 
-class MyApp extends StatelessWidget {
+class EmailApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blueGrey,
         accentColor: Colors.red,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -16,49 +16,40 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
+class MyHomePage extends StatelessWidget {
   final String title;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+  var messages = const [
+    'My first message',
+    'My second message',
+    'You won lottery',
+    'You should read this message',
+    'You won lottery again'
+  ];
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  MyHomePage({this.title});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: ListView.separated(
+        itemCount: messages.length,
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (BuildContext context, int index) {
+          var title = messages[index];
+          return ListTile(
+            title: Text(title),
+            isThreeLine: true,
+            leading: CircleAvatar(
+              child: Text('PJ'),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+            subtitle: Text('Another text which is very very long si everyone can read it and see it'),
+          );
+        },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

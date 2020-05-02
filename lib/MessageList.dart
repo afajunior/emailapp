@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:emailapp/Message.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class MessageList extends StatefulWidget {
   final String title;
@@ -14,23 +11,12 @@ class MessageList extends StatefulWidget {
 }
 
 class _MessageListState extends State<MessageList> {
-  List<Message> messages = [];
-
-  Future loadMessageList() async {
-    http.Response response = await http.get('http://www.mocky.io/v2/5eacd5523300008524dfe6ac');
-    String content = response.body;
-    List collection = json.decode(content);
-    List<Message> _messages = 
-      collection.map((json) => Message.fromJson(json)).toList();
-
-     setState(() {
-       messages = _messages;
-     });
-  }
+  Future<List<Message>> messages;
+  bool isLoading = true;
 
   void initState() {
-    loadMessageList();
     super.initState();
+    messages = Message.brownse();
   }
 
   @override
@@ -38,8 +24,28 @@ class _MessageListState extends State<MessageList> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.refresh), onPressed: () {
+            var _messages = Message.brownse();
+
+            setState(() {
+              messages = _messages;
+            });
+          })
+        ],
       ),
-      body: ListView.separated(
+      body: FutureBuilder(
+        future: messages,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          switch(snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              return Center(child:CircularProgressIndicator());
+            case ConnectionState.done:
+              var messages = snapshot.data;
+              if(snapshot.hasError) return Text("There was an error: ${snapshot.error}");
+                return ListView.separated(
         itemCount: messages.length,
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
@@ -57,7 +63,10 @@ class _MessageListState extends State<MessageList> {
             ),
           );
         },
-      ),
+      );
+          }
+        },
+      )
     );
   }  
 }

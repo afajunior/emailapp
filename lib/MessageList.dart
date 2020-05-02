@@ -1,8 +1,9 @@
+import 'package:emailapp/ComposeButton.dart';
 import 'package:emailapp/Message.dart';
+import 'package:emailapp/MessageDetail.dart';
 import 'package:flutter/material.dart';
 
-class MessageList extends StatefulWidget {
-  final String title;
+class MessageList extends StatefulWidget {final String title;
 
   const MessageList({Key key, this.title}) : super(key: key);
 
@@ -11,12 +12,18 @@ class MessageList extends StatefulWidget {
 }
 
 class _MessageListState extends State<MessageList> {
-  Future<List<Message>> messages;
+  Future<List<Message>> future;
+  List<Message> messages;
   bool isLoading = true;
 
   void initState() {
     super.initState();
-    messages = Message.brownse();
+    fetch();
+  }
+
+  void fetch() async {
+    future = Message.brownse();
+    messages = await future;
   }
 
   @override
@@ -25,17 +32,19 @@ class _MessageListState extends State<MessageList> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.refresh), onPressed: () {
-            var _messages = Message.brownse();
-
-            setState(() {
-              messages = _messages;
-            });
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () async {
+              var _messages =  await Message.brownse();
+              
+              setState(() {
+                messages = _messages;
+              });
           })
         ],
       ),
       body: FutureBuilder(
-        future: messages,
+        future: future,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           switch(snapshot.connectionState) {
             case ConnectionState.none:
@@ -61,12 +70,20 @@ class _MessageListState extends State<MessageList> {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => MessageDetail(message.subject, message.body),
+              ));
+            },
           );
         },
       );
           }
         },
       )
+    , floatingActionButton: ComposeButton(messages),
     );
   }  
 }

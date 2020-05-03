@@ -1,9 +1,7 @@
-import 'package:emailapp/ComposeButton.dart';
 import 'package:emailapp/Message.dart';
 import 'package:emailapp/MessageDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MessageList extends StatefulWidget {
   final String title;
@@ -26,7 +24,7 @@ class _MessageListState extends State<MessageList> {
   }
 
   void fetch() async {
-    future = Message.brownse(status: widget.status);
+    future = Message.brownse(status: widget.status);  
     messages = await future;
   }
 

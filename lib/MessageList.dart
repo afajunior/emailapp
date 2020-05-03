@@ -2,6 +2,7 @@ import 'package:emailapp/ComposeButton.dart';
 import 'package:emailapp/Message.dart';
 import 'package:emailapp/MessageDetail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MessageList extends StatefulWidget {
@@ -35,11 +36,9 @@ class _MessageListState extends State<MessageList> {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.refresh),
-              onPressed: () async {
-                var _messages = await Message.brownse();
-
+              onPressed: () {
                 setState(() {
-                  messages = _messages;
+                  future = Message.brownse();
                 });
               })
         ],
@@ -54,9 +53,11 @@ class _MessageListState extends State<MessageList> {
               otherAccountsPictures: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    showDialog(context: context, builder: (context) {
-                      return AlertDialog(title: Text('Adding new account'));
-                    });
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(title: Text('Adding new account'));
+                        });
                   },
                   child: CircleAvatar(
                     child: Icon(Icons.add),
@@ -71,7 +72,10 @@ class _MessageListState extends State<MessageList> {
                 leading: Icon(FontAwesomeIcons.inbox),
                 title: Text('Inbox'),
                 trailing: Chip(
-                  label: Text('11', style: TextStyle(fontWeight: FontWeight.bold),),
+                  label: Text(
+                    '11',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   backgroundColor: Colors.blue[100],
                 )),
             ListTile(
@@ -113,26 +117,64 @@ class _MessageListState extends State<MessageList> {
                 separatorBuilder: (context, index) => Divider(),
                 itemBuilder: (BuildContext context, int index) {
                   Message message = messages[index];
-                  return ListTile(
-                    title: Text(message.subject),
-                    isThreeLine: true,
-                    leading: CircleAvatar(
-                      child: Text('PJ'),
-                    ),
-                    subtitle: Text(
-                      message.body,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                MessageDetail(message.subject, message.body),
-                          ));
-                    },
-                  );
+
+                  return Slidable(
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.25,
+                      actions: <Widget>[
+                        IconSlideAction(
+                          caption: 'Archive',
+                          color: Colors.blue,
+                          icon: Icons.archive,
+                          onTap: () {},
+                        ),
+                        IconSlideAction(
+                          caption: 'Share',
+                          color: Colors.indigo,
+                          icon: Icons.share,
+                          onTap: () {},
+                        ),
+                      ],
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                          caption: 'More',
+                          color: Colors.black45,
+                          icon: Icons.more_horiz,
+                          onTap: () {},
+                        ),
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          onTap: () {
+                            setState(() {
+                              messages.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
+                      child: ListTile(
+                        title: Text(message.subject),
+                        isThreeLine: true,
+                        leading: CircleAvatar(
+                          child: Text('PJ'),
+                        ),
+                        subtitle: Text(
+                          message.body,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    MessageDetail(
+                                        message.subject, message.body),
+                              ));
+                        },
+                      ),
+                      key: ObjectKey(message));
                 },
               );
           }

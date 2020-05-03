@@ -26,6 +26,7 @@ dependencies:
   http:
   font_awesome_flutter:
   email_validator:
+  flutter_slidable:
 
 dev_dependencies:
   flutter_test:

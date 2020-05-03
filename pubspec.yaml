@@ -24,6 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   http:
+  font_awesome_flutter:
   email_validator:
 
 dev_dependencies:

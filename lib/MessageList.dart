@@ -24,7 +24,7 @@ class _MessageListState extends State<MessageList> {
   }
 
   void fetch() async {
-    future = Message.brownse(status: widget.status);  
+    future = Message.brownse(status: widget.status);
     messages = await future;
   }
 

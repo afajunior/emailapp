@@ -2,10 +2,10 @@ import 'package:emailapp/model/Contact.dart';
 import 'package:flutter/material.dart';
 
 class ContactListBuilder extends StatelessWidget {
-  final Stream<List<Contact>> stream;
   final Function builder;
+  final Stream stream;
 
-  const ContactListBuilder({this.stream, this.builder});
+  const ContactListBuilder({this.builder, this.stream});
 
   @override
   Widget build(BuildContext context) {

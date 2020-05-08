@@ -1,4 +1,6 @@
 import 'package:emailapp/AppDrawer.dart';
+import 'package:emailapp/Counter.dart';
+import 'package:emailapp/FabButton.dart';
 import 'package:flutter/material.dart';
 
 class CalendarScreen extends StatelessWidget {
@@ -9,9 +11,8 @@ class CalendarScreen extends StatelessWidget {
         title: Text('Calendar'),
       ),
       drawer: AppDrawer(),
-      body: Center(
-        child: Text('Calendar'),
-      ),
+      body: Counter(),
+      floatingActionButton: FabButton(),
     );
   }
 }

@@ -12,8 +12,6 @@ class Provider extends InheritedWidget {
     //return (context.inheritFromWidgetOfExactType(Overseer) as Provider).data;
   }
 
-  static Type _typeOf<T>() => T;
-
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) {
     return false;

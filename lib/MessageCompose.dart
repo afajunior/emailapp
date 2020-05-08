@@ -78,7 +78,6 @@ class _MessageComposeState extends State<MessageCompose> {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return null;
   }
 }

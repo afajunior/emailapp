@@ -13,7 +13,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
-      'subject': instance.subject,
-      'body': instance.body,
-    };
+//Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
+//      'subject': instance.subject,
+//      'body': instance.body,
+//    };

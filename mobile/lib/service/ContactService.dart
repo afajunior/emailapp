@@ -4,20 +4,14 @@ import 'package:emailapp/model/Contact.dart';
 import 'package:http/http.dart' as http;
 
 class ContactService {
-  static String _url = 'https://jsonplaceholder.typicode.com/users';
+  static String _url = 'http://my-server-here:3000/contacts';
   static Future<List<Contact>> browse({query}) async {
-    http.Response response = await http.get(_url);
+    http.Response response = await http.get('$_url?q=$query');
     String content = response.body;
 
     List collection = json.decode(content);
 
-    Iterable<Contact> _contacts =
-        collection.map((json) => Contact.fromJson(json)).toList();
-
-    if (query != null && query.isNotEmpty) {
-      _contacts = _contacts
-          .where((contact) => contact.name.toLowerCase().contains(query.toLowerCase()));
-    }
+    Iterable<Contact> _contacts = collection.map((_) => Contact.fromJson(_));
 
     return _contacts.toList();
   }

@@ -1,4 +1,4 @@
-#Sat May 09 23:34:26 BRT 2020
-base.0=/home/anselmo/workspace/emailapp/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+#Sun May 10 11:40:18 BRT 2020
+base.0=/home/anselmo/workspace/emailapp/mobile/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

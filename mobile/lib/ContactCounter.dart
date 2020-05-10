@@ -1,6 +1,6 @@
-import 'package:emailapp/ContactManager.dart';
 import 'package:emailapp/Observer.dart';
 import 'package:emailapp/Provider.dart';
+import 'package:emailapp/manager/ContactManager.dart';
 import 'package:flutter/material.dart';
 
 class ContactCounter extends StatelessWidget {

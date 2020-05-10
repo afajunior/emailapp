@@ -1,5 +1,5 @@
-import 'package:emailapp/ContactManager.dart';
-import 'package:emailapp/CounterManager.dart';
+import 'package:emailapp/manager/ContactManager.dart';
+import 'package:emailapp/manager/CounterManager.dart';
 
 class Overseer {
   Map<dynamic, dynamic> repository = {};

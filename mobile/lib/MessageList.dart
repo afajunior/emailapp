@@ -1,5 +1,5 @@
 import 'package:emailapp/Message.dart';
-import 'package:emailapp/MessageDetail.dart';
+import 'package:emailapp/screen/MessageDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 

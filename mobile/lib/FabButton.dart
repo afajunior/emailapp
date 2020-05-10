@@ -1,4 +1,4 @@
-import 'package:emailapp/CounterManager.dart';
+import 'package:emailapp/manager/CounterManager.dart';
 import 'package:emailapp/Provider.dart';
 import 'package:flutter/material.dart';
 

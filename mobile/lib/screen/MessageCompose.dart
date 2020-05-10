@@ -1,5 +1,4 @@
 import 'package:emailapp/Message.dart';
-import 'package:emailapp/Observer.dart';
 import 'package:emailapp/Provider.dart';
 import 'package:emailapp/manager/MessageFormManager.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +9,6 @@ class MessageCompose extends StatefulWidget {
 }
 
 class _MessageComposeState extends State<MessageCompose> {
-  String to = "";
-  String subject = "";
-  String body = "";
-
-  final key = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     MessageFormManager manager = Provider.of(context).fetch(MessageFormManager);
@@ -26,66 +19,61 @@ class _MessageComposeState extends State<MessageCompose> {
         ),
         body: SingleChildScrollView(
             child: Form(
-          key: key,
           child: Column(
             children: <Widget>[
               ListTile(
-                title: Observer(
+                title: StreamBuilder<String>(
                   stream: manager.email$,
-                  onSuccess: (context, data) {
-                    return TextField(
-                        onChanged: manager.inEmail.add,
-                        decoration: InputDecoration(
-                            labelText: 'TO',
-                            labelStyle:
-                                TextStyle(fontWeight: FontWeight.bold)));
-                  },
-                  onError: (context, data) {
+                  builder: (context, snapshot) {
                     return TextField(
                       onChanged: manager.inEmail.add,
                       decoration: InputDecoration(
-                        labelText: 'TO (error)',
-                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                        errorText: data,
-                      ),
+                          labelText: 'TO',
+                          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                          errorText: snapshot.error),
                     );
                   },
                 ),
               ),
               ListTile(
-                  title: TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return "`SUBJECT` cannot be empty";
-                  } else if (value.length < 4) {
-                    return "`SUBJECT` must be longer than 4 characters";
-                  }
-                  return null;
-                },
-                onSaved: (value) => subject = value,
-                decoration: InputDecoration(
-                    labelText: 'SUBJECT',
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold)),
-              )),
-              ListTile(
-                  title: TextFormField(
-                onSaved: (value) => body = value,
-                decoration: InputDecoration(
-                    labelText: 'BODY',
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold)),
-                maxLines: 9,
-              )),
-              ListTile(
-                title: RaisedButton(
-                  child: Text('SEND'),
-                  onPressed: () {
-                    if (this.key.currentState.validate()) {
-                      this.key.currentState.save();
-                      Message message = Message(subject, body);
-                      Navigator.pop(context, message);
-                    }
+                title: StreamBuilder<String>(
+                  stream: manager.subject$,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      onChanged: manager.inSubject.add,
+                      decoration: InputDecoration(
+                          labelText: 'SUBJECT',
+                          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                          errorText: snapshot.error),
+                    );
                   },
                 ),
+              ),
+              Divider(),
+              ListTile(
+                title: TextField(
+                  onChanged: manager.inBody.add,
+                  decoration: InputDecoration(
+                    labelText: 'BODY',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  maxLines: 9,
+                ),
+              ),
+              ListTile(
+                title: StreamBuilder<Object>(
+                    stream: manager.isFormValid$,
+                    builder: (context, snapshot) {
+                      return RaisedButton(
+                        child: Text('SEND'),
+                        onPressed: () {
+                          if(snapshot.hasData) {
+                            Message message = manager.submit();
+                            Navigator.pop(context, message);
+                          }
+                        },
+                      );
+                    }),
               )
             ],
           ),

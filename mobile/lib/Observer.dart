@@ -23,7 +23,7 @@ class Observer<T> extends StatelessWidget {
       builder: (context, AsyncSnapshot<T> snapshot) {
         if (snapshot.hasError) {
           return onError != null
-              ? onError(context)
+              ? onError(context, snapshot.error)
               : _defaultOnError(context);
         }
         if (snapshot.hasData) {

@@ -1,4 +1,5 @@
 import 'package:emailapp/AppDrawer.dart';
+import 'package:emailapp/ComposeButton.dart';
 import 'package:emailapp/MessageList.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,7 @@ class InboxScreen extends StatelessWidget {
             MessageList(status: 'other')
           ],
         ),
+        floatingActionButton: ComposeButton([]),
       ),
       length: 2,
     );

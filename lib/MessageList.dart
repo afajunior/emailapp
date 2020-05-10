@@ -107,6 +107,7 @@ class _MessageListState extends State<MessageList> {
               },
             );
         }
+        return null;
       },
     );
   }
